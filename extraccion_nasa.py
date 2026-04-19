@@ -64,5 +64,5 @@ if __name__ == "__main__":
         os.makedirs("data", exist_ok=True)
         ruta_archivo = "data/dataset_bogota_2023.csv"
         df_clima.to_csv(ruta_archivo, index=False)
-        print(f"\n✅ Archivo guardado correctamente en: {ruta_archivo}")
+        print(f"\n Archivo guardado correctamente en: {ruta_archivo}")
  
