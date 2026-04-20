@@ -1,19 +1,20 @@
-# Entornos Virtuales
+# Entornos virtuales
 venv/
 env/
-.venv/
-
-# Archivos de caché de Python
-__pycache__/
-*.pyc
-
-# DATOS (¡Lo más importante!)
-data/
-*.csv
-*.json
-
-# Jupyter Notebooks (Los usaremos mañana)
-.ipynb_checkpoints/
-
-# Variables de entorno y secretos
 .env
+
+# Python (Archivos temporales)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# IDEs
+.vscode/
+.idea/
+
+# Sistema
+.DS_Store
+Thumbs.db

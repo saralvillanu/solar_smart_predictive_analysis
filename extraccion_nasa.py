@@ -5,8 +5,8 @@ import os
 def extraccion_limpieza(latitud, longitud, fecha_inicio, fecha_fin):
     """" Extracción de datos de NASA POWER, los convierte a DataFrame y limpia los valores nulos"""
     url = "https://power.larc.nasa.gov/api/temporal/daily/point"
-    parametros :{
-        "parameters": "ALLSKY_SFC_SW_DWN, T2M, RH2M", #Radiación, Temperatura, Humedad
+    parametros={
+        "parameters": "ALLSKY_SFC_SW_DWN,T2M,RH2M", #Radiación, Temperatura, Humedad
         "community": "RE", #Renewable Energy
         "longitude": longitud,
         "latitude": latitud,
@@ -15,12 +15,13 @@ def extraccion_limpieza(latitud, longitud, fecha_inicio, fecha_fin):
         "format": "JSON"
     }
 
-    respuesta = requests.get(url=parametros)
+    respuesta = requests.get(url, params=parametros)
+    print(f"URL completa enviada: {respuesta.url}")
 
     if respuesta.status_code == 200:
-        datos_json = respuesta.jason()
+        datos_json = respuesta.json()
 
-        #1. Se extrae solo la parte de los datos e ignoramos loss metadatos
+        #1. Se extrae solo la parte de los datos e ignoramos los metadatos
         metricas = datos_json['properties']['parameter']
 
         #2. Se convierte el diccionario a un DataFrame de pandas
@@ -49,11 +50,11 @@ def extraccion_limpieza(latitud, longitud, fecha_inicio, fecha_fin):
 if __name__ == "__main__":
     LAT_BOGOTA = 4.6097
     LON_BOGOTA = -74.0817
-    INICIO = "20230101"
-    FIN = "20231231"
+    INICIO = "20200101"
+    FIN = "20241231"
 
     # Ejecutamos nuestra nueva función
-    df_clima = extraer_y_limpiar_datos(LAT_BOGOTA, LON_BOGOTA, INICIO, FIN)
+    df_clima = extraccion_limpieza(LAT_BOGOTA, LON_BOGOTA, INICIO, FIN)
     
     if df_clima is not None:
         # Mostramos las primeras 5 filas para verificar
@@ -62,7 +63,7 @@ if __name__ == "__main__":
         
         # Guardamos los datos en la carpeta 'data/' (creándola si no existe)
         os.makedirs("data", exist_ok=True)
-        ruta_archivo = "data/dataset_bogota_2023.csv"
+        ruta_archivo = "data/dataset_bogota_5años.csv"
         df_clima.to_csv(ruta_archivo, index=False)
         print(f"\n Archivo guardado correctamente en: {ruta_archivo}")
  
