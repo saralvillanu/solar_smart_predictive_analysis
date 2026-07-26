@@ -6,7 +6,7 @@ def extraccion_limpieza(latitud, longitud, fecha_inicio, fecha_fin):
     """" Extracción de datos de NASA POWER, los convierte a DataFrame y limpia los valores nulos"""
     url = "https://power.larc.nasa.gov/api/temporal/daily/point"
     parametros={
-        "parameters": "ALLSKY_SFC_SW_DWN,T2M,T2M_MAX,T2M_MIN,T2M_RANGE,RH2M", #Radiación, Temperatura, Humedad
+        "parameters": "ALLSKY_SFC_SW_DWN,T2M,T2M_MAX,T2M_MIN,T2M_RANGE,RH2M,CLOUD_AMT,CLRSKY_SFC_SW_DWN,PRECTOTCORR", #Radiación, Temperatura, Humedad
         "community": "RE", #Renewable Energy
         "longitude": longitud,
         "latitude": latitud,
@@ -60,10 +60,24 @@ if __name__ == "__main__":
         # Mostramos las primeras 5 filas para verificar
         print("\nPrimeros 5 registros:")
         print(df_clima.head())
-        
-        # Guardamos los datos en la carpeta 'data/' (creándola si no existe)
+
+        # Creamos la carpeta 'data/' si no existe
         os.makedirs("data", exist_ok=True)
+
         ruta_archivo = "data/dataset_bogota_5years.csv"
-        df_clima.to_csv(ruta_archivo, index=False)
-        print(f"\n Archivo guardado correctamente en: {ruta_archivo}")
+
+        # Verificamos si el archivo ya existe
+        archivo_existia = os.path.exists(ruta_archivo)
+
+        # mode="w" sobrescribe el archivo existente
+        df_clima.to_csv(
+            ruta_archivo,
+            index=False,
+            mode="w"
+        )
+
+        if archivo_existia:
+            print(f"\nArchivo existente sobrescrito correctamente: {ruta_archivo}")
+        else:
+            print(f"\nArchivo guardado correctamente en: {ruta_archivo}")
  
